@@ -10,8 +10,8 @@ namespace AmountToChineseString
     {
         public static void Main(string[] args)
         {
-            int n = 107000001;
-            Console.WriteLine(AmountToString(n, PaddingZeroUnit.開頭不補零));
+            int n = 1033;
+            Console.WriteLine(AmountToString(n, PaddingZeroUnit.佰萬));
         }
 
         public static string AmountToString(long amount, PaddingZeroUnit paddingZeroUnit)
@@ -20,15 +20,15 @@ namespace AmountToChineseString
             int length = amount.ToString().Length - 1;
             if (amount <= 0)
             {
-                throw new ArgumentOutOfRangeException("number", "數值必需為正整數");
+                throw new ArgumentOutOfRangeException("amount", "數值必需為正整數");
             }
             else if ((int)paddingZeroUnit != 0 && length > (int)paddingZeroUnit)
             {
-                throw new ArgumentOutOfRangeException("PaddingZeroUnit", "限定最高單位低於傳入金額");
+                throw new ArgumentOutOfRangeException("paddingZeroUnit", "限定最高單位低於傳入金額");
             }
             else if (length > 13)
             {
-                throw new ArgumentOutOfRangeException("number", "數值超過 13 位數");
+                throw new ArgumentOutOfRangeException("amount", "數值超過 13 位數");
             }
 
             string[] numberTexts = { "零", "壹", "貳", "參", "肆", "伍", "陸", "柒", "捌", "玖" };
