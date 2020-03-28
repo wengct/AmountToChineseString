@@ -10,16 +10,19 @@ namespace AmountToChineseString
     {
         public static void Main(string[] args)
         {
-            int n = 1033;
-            Console.WriteLine($"開頭不補零\t\t      {AmountToString(n, PaddingZeroUnit.NoPadding)}");
-            Console.WriteLine($"顯示最高單為「萬」\t{AmountToString(n, PaddingZeroUnit.TenThousand)}");
-            Console.WriteLine($"顯示最高單為「拾」\t      {AmountToString(n, PaddingZeroUnit.Ten)}");
+            long n;
+            Console.WriteLine($"{0.ToString().PadLeft(16)}={AmountToString(0, AmountUnit.Trillion)}");
+            for (int i = 0; i < 13; i++)
+            {
+                n = Convert.ToInt64(Math.Pow(10, i));
+                Console.WriteLine($"{n.ToString().PadLeft(16)}={AmountToString(n, AmountUnit.Trillion)}");
+            }
         }
 
-        public static string AmountToString(long amount, PaddingZeroUnit paddingZeroUnit)
+        public static string AmountToString(long amount, AmountUnit amountUnit)
         {
             int length = amount.ToString().Length - 1;
-            if (amount <= 0)
+            if (amount < 0)
             {
                 throw new ArgumentOutOfRangeException("amount", "數值必須為正整數");
             }
@@ -28,16 +31,15 @@ namespace AmountToChineseString
                 throw new ArgumentOutOfRangeException("amount", "數值不可超過13位數");
             }
 
-            if (paddingZeroUnit != 0 && length > (int)paddingZeroUnit)
+            if (amountUnit == 0 || length > (int)amountUnit)
             {
-                paddingZeroUnit = (PaddingZeroUnit)length;
+                amountUnit = (AmountUnit)length;
             }
             string[] numberTexts = { "零", "壹", "貳", "參", "肆", "伍", "陸", "柒", "捌", "玖" };
             string[] typeMappings = { "", "拾", "佰", "仟", "萬", "拾", "佰", "仟", "億", "拾", "佰", "仟", "兆" };
-            int loopTimes = paddingZeroUnit == 0 ? length : (int)paddingZeroUnit;
             long pow10, tempNum;
             List<string> result = new List<string>();
-            for (int i = loopTimes; i >= 0; i--)
+            for (int i = (int)amountUnit; i >= 0; i--)
             {
                 pow10 = Convert.ToInt64(Math.Pow(10, i));
                 tempNum = amount / pow10;
@@ -54,7 +56,7 @@ namespace AmountToChineseString
         /// <summary>
         /// 顯示最高單位，不足補零
         /// </summary>
-        public enum PaddingZeroUnit
+        public enum AmountUnit
         {
             /// <summary>
             /// 開頭不補零
