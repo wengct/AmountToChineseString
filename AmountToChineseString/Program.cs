@@ -13,6 +13,7 @@ namespace AmountToChineseString
             int n = 1033;
             Console.WriteLine($"開頭不補零\t\t      {AmountToString(n, PaddingZeroUnit.NoPadding)}");
             Console.WriteLine($"顯示最高單為「萬」\t{AmountToString(n, PaddingZeroUnit.TenThousand)}");
+            Console.WriteLine($"顯示最高單為「拾」\t      {AmountToString(n, PaddingZeroUnit.Ten)}");
         }
 
         public static string AmountToString(long amount, PaddingZeroUnit paddingZeroUnit)
@@ -20,17 +21,17 @@ namespace AmountToChineseString
             int length = amount.ToString().Length - 1;
             if (amount <= 0)
             {
-                throw new ArgumentOutOfRangeException("amount", "數值必需為正整數");
-            }
-            else if (paddingZeroUnit != 0 && length > (int)paddingZeroUnit)
-            {
-                throw new ArgumentOutOfRangeException("paddingZeroUnit", "限定最高單位低於傳入金額");
+                throw new ArgumentOutOfRangeException("amount", "數值必須為正整數");
             }
             else if (length > 13)
             {
-                throw new ArgumentOutOfRangeException("amount", "數值超過 13 位數");
+                throw new ArgumentOutOfRangeException("amount", "數值不可超過13位數");
             }
 
+            if (paddingZeroUnit != 0 && length > (int)paddingZeroUnit)
+            {
+                paddingZeroUnit = (PaddingZeroUnit)length;
+            }
             string[] numberTexts = { "零", "壹", "貳", "參", "肆", "伍", "陸", "柒", "捌", "玖" };
             string[] typeMappings = { "", "拾", "佰", "仟", "萬", "拾", "佰", "仟", "億", "拾", "佰", "仟", "兆" };
             int loopTimes = paddingZeroUnit == 0 ? length : (int)paddingZeroUnit;
