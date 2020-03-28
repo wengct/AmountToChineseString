@@ -11,8 +11,8 @@ namespace AmountToChineseString
         public static void Main(string[] args)
         {
             int n = 1033;
-            Console.WriteLine(AmountToString(n, PaddingZeroUnit.NoPadding));
-            Console.WriteLine(AmountToString(n, PaddingZeroUnit.HundredMillion));
+            Console.WriteLine($"開頭不補零\t\t      {AmountToString(n, PaddingZeroUnit.NoPadding)}");
+            Console.WriteLine($"顯示最高單為「萬」\t{AmountToString(n, PaddingZeroUnit.TenThousand)}");
         }
 
         public static string AmountToString(long amount, PaddingZeroUnit paddingZeroUnit)
