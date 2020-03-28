@@ -8,17 +8,25 @@ namespace AmountToChineseString
 {
     class Program
     {
+
         public static void Main(string[] args)
         {
             long n;
             Console.WriteLine($"{0.ToString().PadLeft(16)}={AmountToString(0, AmountUnit.Trillion)}");
-            for (int i = 0; i < 13; i++)
+            for (int i = 1; i <= 13; i++)
             {
-                n = Convert.ToInt64(Math.Pow(10, i));
+                string s = GetRandomString(i);
+                n = Convert.ToInt64(s);
                 Console.WriteLine($"{n.ToString().PadLeft(16)}={AmountToString(n, AmountUnit.Trillion)}");
             }
         }
 
+        /// <summary>
+        /// 金額轉國字
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <param name="amountUnit"></param>
+        /// <returns></returns>
         public static string AmountToString(long amount, AmountUnit amountUnit)
         {
             int length = amount.ToString().Length - 1;
@@ -110,6 +118,30 @@ namespace AmountToChineseString
             /// 兆
             /// </summary>
             Trillion
+        }
+
+        /// <summary>
+        /// 隨機取得數字
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public static string GetRandomString(int length)
+        {
+            var str = "0123456789";
+            var next = new Random(Guid.NewGuid().GetHashCode());
+            var builder = new StringBuilder();
+            char temp;
+            for (var i = 0; i < length; i++)
+            {
+                temp = str[next.Next(0, str.Length)];
+                if (i == 0 && temp == '0')
+                {
+                    i = -1;
+                    continue;
+                }
+                builder.Append(temp);
+            }
+            return builder.ToString();
         }
     }
 }
